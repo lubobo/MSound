@@ -1,0 +1,81 @@
+﻿<Page
+    x:Class="MSound.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MSound"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Frame Name="MyFrame">
+            <RelativePanel HorizontalAlignment="Center"
+                           ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                <FlipView Height="200"
+                          Name="myFlipView"
+                                  Margin="0,0,0,20" 
+                                  SelectionChanged="myFlipView_SelectionChanged">
+                    <Image VerticalAlignment="Top"
+                           HorizontalAlignment="Stretch"
+                                   Name="flipImage1"/>
+                    <Image VerticalAlignment="Top"
+                           HorizontalAlignment="Stretch"
+                                   Name="flipImage2"/>
+                    <Image VerticalAlignment="Top"
+                           HorizontalAlignment="Stretch"
+                                   Name="flipImage3"/>
+                    <Image VerticalAlignment="Top"
+                           HorizontalAlignment="Stretch"
+                                   Name="flipImage4"/>
+                </FlipView>
+
+                <TextBlock Name="block" 
+                                   Text="播放列表"
+                                   FontFamily="微软雅黑"
+                                   RelativePanel.AlignBottomWith="myFlipView"
+                                   FontSize="16"
+                                   FontStyle="Normal"
+                                   Margin="10,7,0,0"/>
+
+                <GridView HorizontalAlignment="Stretch"
+                          ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                  ItemsSource="{Binding name}"
+                                  IsItemClickEnabled="True"
+                                  ItemClick="GridView_ItemClick"
+                                  x:Name="listBox"
+                                  
+                                  Height="400"
+                                  Margin="0,0,0,-850">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Width="1500"
+                                        BorderBrush="LightGray"
+                                                BorderThickness="0.8"
+                                        HorizontalAlignment="Stretch"
+                                        Orientation="Vertical">
+                                <TextBlock Text="{Binding name}"
+                                           FontFamily="微软雅黑"
+                                           FontSize="14"
+                                           Padding="15,5,0,0"/>
+                                <StackPanel Orientation="Horizontal"
+                                            Width="auto">
+                                    <TextBlock Text="{Binding artists[0].name}"
+                                               FontFamily="微软雅黑"
+                                               FontSize="12"
+                                               Padding="15,0,0,5"/>
+                                    <TextBlock Text="-"
+                                               Padding="15,0,0,5"/>
+                                    <TextBlock Text="{Binding album.name}"
+                                               FontFamily="微软雅黑"
+                                               FontSize="12"
+                                               Padding="15,0,0,5"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+                
+            </RelativePanel>
+        </Frame>
+    </Grid>
+</Page>

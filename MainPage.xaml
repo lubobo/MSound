@@ -1,0 +1,450 @@
+﻿<Page x:Class="MSound.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MSound"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:data="using:MSound"
+    Loaded="Page_Loaded">
+
+
+    
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="6*" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+        <Grid.Resources>
+            <Storyboard x:Name="PlayIn">
+                <DoubleAnimation To="1" Duration="0:0:0.4"
+                                 Storyboard.TargetName="SwapCP" 
+                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)">
+                    <DoubleAnimation.EasingFunction>
+                        <QuadraticEase EasingMode="EaseIn" />
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+                <DoubleAnimation To="1" Duration="0:0:0.4"
+                                 Storyboard.TargetName="SwapCP"
+                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)">
+                    <DoubleAnimation.EasingFunction>
+                        <QuadraticEase EasingMode="EaseIn" />
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+            </Storyboard>
+            <Storyboard x:Name="PlayOut">
+                <DoubleAnimation To="0" Duration="0:0:0.4"
+                                 Storyboard.TargetName="SwapCP" 
+                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleX)">
+                    <DoubleAnimation.EasingFunction>
+                        <QuadraticEase EasingMode="EaseOut" />
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+                <DoubleAnimation To="0" Duration="0:0:0.4"
+                                 Storyboard.TargetName="SwapCP"
+                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.ScaleY)">
+                    <DoubleAnimation.EasingFunction>
+                        <QuadraticEase EasingMode="EaseOut" />
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+            </Storyboard>
+            <Storyboard x:Name="EllRound" RepeatBehavior="Forever">
+                <DoubleAnimation Duration="0:0:20" To="360" 
+                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" 
+                                 Storyboard.TargetName="Apicture" 
+                                 d:IsOptimized="True"/>
+            </Storyboard>
+        </Grid.Resources>
+        <ProgressRing Name="wait" 
+                      IsActive="False"
+                      Grid.Row="1"/>
+        <SplitView Grid.Row="0"
+                   CompactPaneLength="45" 
+                   Name="MySplitView"
+                   OpenPaneLength="200"
+                   DisplayMode="CompactInline">
+            <SplitView.Pane>
+                <ContentPresenter x:Name="LeftPaneContentPresenter" 
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch">
+                    <Grid Background="#FFE6E8C9">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Button Name="MyHomeButton"
+                                Click="Button_Click_1"
+                                FontFamily="Segoe MDL2 Assets" 
+                                Content="&#xE700;" 
+                                FontSize="24"
+                                Foreground="Gray"/>
+                        <AutoSuggestBox Margin="45,0,0,0"
+                                        Name="SearchAutoSuggestBox" 
+                                        PlaceholderText="搜索音乐"
+                                        Width="155"
+                                        Height="38"
+                                        QueryIcon="Find"
+                                        TextChanged="SearchAutoSuggestBox_TextChanged"
+                                        QuerySubmitted="SearchAutoSuggestBox_QuerySubmitted"
+                                        RelativePanel.AlignRightWithPanel="True" />
+                        <ListBox x:Name="myListBox"
+                                 SelectionMode="Single"
+                                 Grid.Row="1"
+                                 SelectionChanged="myListBox_SelectionChanged">
+
+                            <ListBoxItem Name="Home"
+                                 Background="#FFE6E8C9"
+                                 Opacity="0.5">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                                       FontSize="24"
+                                       Foreground="#FF080808"
+                                       Text="&#xE189;"/>
+                                    <TextBlock FontFamily="微软雅黑" 
+                                       FontSize="15" 
+                                       Text="正在播放" 
+                                       Margin="10,0,0,0"
+                                       VerticalAlignment="Bottom"/>
+                                </StackPanel>
+
+                            </ListBoxItem>
+                            <ListBoxItem Background="#FFE6E8C9"
+                                 Opacity="0.5"
+                                 Name="Users">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                                       FontSize="24"
+                                       Foreground="#FF080808"
+                                       Text="&#xE7F6;"/>
+                                    <TextBlock FontFamily="微软雅黑" 
+                                       FontSize="15" 
+                                       Text="播放列表" 
+                                       Margin="10,0,0,0"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Top"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem Name="Messages"
+                                 Background="#FFE6E8C9"
+                                 Opacity="0.5">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                                       FontSize="24"
+                                       Foreground="#FF080808"
+                                       Text="&#xE119;"/>
+                                    <TextBlock FontFamily="微软雅黑" 
+                                       FontSize="15" 
+                                       Margin="10,0,0,0"
+                                       Text="我的消息" VerticalAlignment="Bottom"/>
+                                </StackPanel>
+
+                            </ListBoxItem>
+
+                            <ListBoxItem 
+                                Name="shezhi"
+                                 Background="#FFE6E8C9"
+                                 Opacity="0.5">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                                       FontSize="24"
+                                       Foreground="#FF080808"
+                                       Text="&#xE115;"/>
+                                    <TextBlock FontFamily="微软雅黑" 
+                                       FontSize="15" 
+                                       Margin="10,0,0,0"
+                                       Text="设置" VerticalAlignment="Bottom"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                        </ListBox>
+                    </Grid>
+
+                </ContentPresenter>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Frame Name="MyFrame">
+
+                    <RelativePanel HorizontalAlignment="Center"
+                                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                        <FlipView Height="200"
+                                  Name="myFlipView"
+                                  Margin="0,0,0,20" 
+                                  SelectionChanged="myFlipView_SelectionChanged">
+                            <Image VerticalAlignment="Top"
+                                   HorizontalAlignment="Stretch"
+                                   Name="flipImage1"/>
+                            <Image VerticalAlignment="Top"
+                                   HorizontalAlignment="Stretch"
+                                   Name="flipImage2"/>
+                            <Image VerticalAlignment="Top"
+                                   HorizontalAlignment="Stretch"
+                                   Name="flipImage3"/>
+                            <Image VerticalAlignment="Top"
+                                   HorizontalAlignment="Stretch"
+                                   Name="flipImage4"/>
+                        </FlipView>
+
+                        <TextBlock Name="block" 
+                                   Text="播放列表"
+                                   FontFamily="微软雅黑"
+                                   RelativePanel.AlignBottomWith="myFlipView"
+                                   FontSize="16"
+                                   FontStyle="Normal"
+                                   Margin="10,7,0,0"/>
+
+                        <GridView HorizontalAlignment="Stretch"
+                                  ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                  ItemsSource="{Binding name}"
+                                  IsItemClickEnabled="True"
+                                  ItemClick="GridView_ItemClick"
+                                  x:Name="listBox"
+                                  Height="400"
+                                  Margin="0,0,0,-850">
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Width="1500"
+                                                HorizontalAlignment="Stretch"
+                                                BorderBrush="LightGray"
+                                                BorderThickness="0.8"
+                                                Orientation="Vertical">
+                                        <TextBlock Text="{Binding name}"
+                                           FontFamily="微软雅黑"
+                                           FontSize="14"
+                                           Padding="15,5,0,0"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding artists[0].name}"
+                                               FontFamily="微软雅黑"
+                                               FontSize="12"
+                                               Padding="15,0,0,5"/>
+                                            <TextBlock Text="-"
+                                               Padding="15,0,0,5"/>
+                                            <TextBlock Text="{Binding album.name}"
+                                               FontFamily="微软雅黑"
+                                               FontSize="12"
+                                               Padding="15,0,0,5"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+
+                    </RelativePanel>
+                </Frame>
+
+            </SplitView.Content>
+        </SplitView>
+
+        <ContentPresenter Name="SwapCP" 
+                          Visibility="Visible"
+                          VerticalAlignment="Stretch"
+                          HorizontalAlignment="Stretch"
+                          Background="White"
+                          Grid.Row="0"
+                          RenderTransformOrigin="0,1">
+            <ContentPresenter.RenderTransform>
+                <CompositeTransform ScaleX="0" ScaleY="0" />
+            </ContentPresenter.RenderTransform>
+            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                <RelativePanel Width="850">
+                    <Ellipse Name="Apicture" Width="250" Height="250"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             StrokeThickness="60"
+                             Margin="75,75,0,0"
+                             RenderTransformOrigin="0.5,0.5">
+                        <Ellipse.Stroke>
+                            <ImageBrush ImageSource="Assets/r3.jpg" Stretch="Fill"/>
+                        </Ellipse.Stroke>
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="Assets/01.jpg" Stretch="Uniform"/>
+                        </Ellipse.Fill>
+                        <Ellipse.RenderTransform>
+                            <CompositeTransform />
+                        </Ellipse.RenderTransform>
+                    </Ellipse>
+                    <Button FontFamily="Segoe MDL2 Assets"
+                        FontSize="24"
+                        RelativePanel.AlignRightWithPanel="True"
+                        Background="{x:Null}"
+                        Margin="0,30,45,0"
+                        Content="&#xE830;" Click="PlayviewOut"/>
+                    <StackPanel Name="buttons"
+                                Height="40"
+                                Width="270"
+                                Orientation="Horizontal"
+                                Margin="70,50,0,0"
+                                RelativePanel.Below="Apicture">
+
+                        <TextBlock Name="like" Tapped="Like"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="18"                               
+                               Margin="10,10,0,0"
+                               Text="&#xE006;"
+                               IsTapEnabled="True"/>
+                        <TextBlock FontFamily="微软雅黑"
+                               FontSize="14"
+                               Margin="2,10,10,0"
+                               Text="喜欢"/>
+                        <TextBlock FontFamily="Segoe MDL2 Assets"
+                               FontSize="18"
+                               Margin="10,10,0,0"
+                               Text="&#xE118;"
+                               IsTapEnabled="True"/>
+                        <TextBlock FontFamily="微软雅黑"
+                               FontSize="14"
+                               Margin="2,10,10,0"
+                               Text="下载"/>
+                        <TextBlock FontFamily="Segoe MDL2 Assets"
+                               FontSize="18"
+                               Margin="10,10,0,0"
+                               Text="&#xE724;"
+                               IsTapEnabled="True"/>
+                        <TextBlock FontFamily="微软雅黑"
+                               FontSize="14"
+                               Margin="2,10,10,0"
+                               Text="分享"/>
+                        <TextBlock Name="collect"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="18"
+                               Margin="10,10,0,0"
+                               Text="&#xE24A;"
+                               IsTapEnabled="True"
+                               Tapped="Collect_Tap"/>
+                        <TextBlock FontFamily="微软雅黑"
+                               FontSize="14"
+                               Margin="2,10,10,0"
+                               Text="收藏"/>
+                    </StackPanel>
+                    <StackPanel Name="Smessage" Margin="0,35,90,0" RelativePanel.AlignRightWithPanel="True">
+                        <TextBlock FontFamily="微软雅黑" 
+                                   FontSize="20"
+                                   Width="300" 
+                                   Name="SoundName"/>
+                        <RelativePanel Height="60" Margin="0,10,0,0">
+                            <TextBlock Name="source0" 
+                                       FontFamily="微软雅黑"
+                                       FontSize="10" 
+                                       Text="专辑："/>
+                            <TextBlock Name="source1" 
+                                       RelativePanel.RightOf="source0" 
+                                       FontSize="10" 
+                                       Foreground="Blue"/>
+                            <TextBlock Name="singer0" 
+                                       RelativePanel.RightOf="source1"
+                                       FontFamily="微软雅黑"
+                                       FontSize="10" Text=" 歌手："/>
+                            <TextBlock Name="singer1" 
+                                       RelativePanel.RightOf="singer0" 
+                                       FontSize="10" 
+                                       Foreground="Blue"/>
+                        </RelativePanel>
+                        <ScrollViewer Margin="0,-20,0,0" Height="300" VerticalScrollBarVisibility="Hidden">
+                            <TextBlock FontFamily="微软雅黑"
+                                       FontSize="15"
+                                       Name="Lyric"
+                                       TextWrapping="Wrap"
+                                       Width="300">
+                            </TextBlock>
+                        </ScrollViewer>
+                    </StackPanel>
+                    <ScrollViewer Width="710" Height="400"
+                              Margin="70,40,0,0"
+                              Background="WhiteSmoke"
+                              RelativePanel.Below="buttons"
+                                  VerticalScrollBarVisibility="Hidden">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Background="#FFE6E5DC">
+                                <TextBlock FontFamily="微软雅黑" FontSize="22" Text="评论"/>
+                                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="36" Margin="10,0,0,0" Foreground="Gray" Text="&#xE765;"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,20,0,20" Width="700">
+                                <TextBox Name="sentences" Height="60" Width="630" Margin="0,0,0,0" VerticalContentAlignment="Center"
+                                     FontFamily="Segoe MDL2 Assets" 
+                                     Foreground="Gray"
+                                     FontSize="12" 
+                                     BorderBrush="Gray"
+                                     MaxLength="500"
+                                     Text="发表评论"/>
+                                <AppBarButton Label="发表" Icon="Comment" BorderBrush="Gray" BorderThickness="1" Click="send_comment"/>
+                            </StackPanel>
+                            <TextBlock FontFamily="微软雅黑" FontSize="22" Text="精彩评论"/>
+                            <StackPanel Margin="0,10,0,0">
+                                <StackPanel BorderBrush="#FFE6E5DC" BorderThickness="1">
+                                    <Grid>
+                                        <GridView ItemsSource="{x:Bind comments}"
+                                                  IsItemClickEnabled="True" ItemClick="share_comments" 
+                                                  >
+                                            <GridView.ItemTemplate>
+                                                <DataTemplate x:DataType="data:comments"
+                                                             >
+                                                    <RelativePanel Width="680">
+                                                        <Ellipse Name="user_pic" Width="50" Height="50" VerticalAlignment="Center">
+                                                            <Ellipse.Fill>
+                                                                <ImageBrush ImageSource="{x:Bind user_picture}" Stretch="UniformToFill"/>
+                                                            </Ellipse.Fill>
+                                                        </Ellipse>
+                                                        <TextBlock Name="user_name" RelativePanel.RightOf="user_pic" FontSize="10" Foreground="#FF4983B7" Margin="10,2,0,0" Text="{x:Bind user_name}"/>
+                                                        <TextBlock Name="time" 
+                                                           RelativePanel.Below="user_name"
+                                                           RelativePanel.RightOf="user_pic"
+                                                           Margin="10,3,0,0"
+                                                           FontFamily="微软雅黑"
+                                                           FontSize="8"
+                                                           Foreground="#FF9C9C9C"
+                                                           Text="{x:Bind time}"/>
+                                                        <TextBlock FontFamily="微软雅黑"
+                                               FontSize="13"
+                                               Foreground="Gray"
+                                               TextWrapping="Wrap"
+                                               Margin="10,5,10,10"
+                                               RelativePanel.RightOf="user_pic"
+                                               RelativePanel.Below="time" 
+                                               Text="{x:Bind notice}"/>
+                                                        <StackPanel RelativePanel.AlignBottomWithPanel="True"
+                                                RelativePanel.AlignRightWithPanel="True"
+                                                Orientation="Horizontal">
+                                                            <TextBlock Name="like"
+                                                                   FontFamily="Segoe MDL2 Assets"
+                                                                   FontSize="12"
+                                                                   Foreground="DarkGray"
+                                                                   Text="&#xE209;"
+                                                                   Margin="0,2,15,0"/>
+                                                        </StackPanel>
+                                                    </RelativePanel>
+                                                </DataTemplate>
+                                            </GridView.ItemTemplate>
+                                        </GridView>
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </RelativePanel>
+            </ScrollViewer>
+        </ContentPresenter>
+
+        <ContentPresenter Name="FooterCP" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
+
+            <RelativePanel >
+                <Image     Width="80"
+                           Height="80"
+                           Name="flipImage"
+                           Margin="2" 
+                           IsTapEnabled="True" 
+                           Tapped="PlayviewIn"/>
+                <MediaElement 
+                              Name="ResultSound"
+                              RelativePanel.RightOf="flipImage"
+                              HorizontalAlignment="Stretch" 
+                              Height="95"
+                              Width="800"
+                              AreTransportControlsEnabled="True"/>
+
+            </RelativePanel>
+
+        </ContentPresenter>
+    
+    </Grid>
+    
+</Page>
